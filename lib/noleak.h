@@ -8,4 +8,5 @@ typedef struct		s_noleak
 }			t_noleak;
 
 void		*xmalloc(int size);
+void		xfree(void *data);
 #endif
