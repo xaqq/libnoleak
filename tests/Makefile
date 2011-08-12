@@ -6,7 +6,7 @@ OBJ=		$(SRC:.c=.o)
 
 CC=		gcc
 
-CFLAGS+=	-W -Wall -I ./../lib -g -pg
+CFLAGS+=	-W -Wall -I ./../lib -g
 
 $(NAME):	$(OBJ)
 		$(CC) -o $(NAME) $(OBJ) -pg -L ../lib/ -lnoleak

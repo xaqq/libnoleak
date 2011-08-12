@@ -6,7 +6,7 @@ OBJ=		$(SRC:.c=.o)
 
 CC=		gcc
 
-CFLAGS+=	-W -Wall
+CFLAGS+=	-W -Wall -g -pg
 
 $(NAME):	$(OBJ)
 		ar rcs $(NAME) $(OBJ)
