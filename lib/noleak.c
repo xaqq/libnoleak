@@ -1,67 +1,65 @@
 #include	<stdlib.h>
 #include	"noleak.h"
 
-t_noleak	*noleak_set_first_item(t_noleak *item, int set)
+void	*noleak_set_last_item(void *item, int set)
 {
-  static t_noleak *i = NULL;
+  static void *i = NULL;
   
   if (set)
     i = item;
   return (i);
 }
 
-t_noleak	*noleak_get_first_item(void)
+void	*noleak_get_last_item(void)
 {
-  return (noleak_set_first_item(NULL, 0));
+  return (noleak_set_last_item(NULL, 0));
 }
 
 void		xfree(void *data)
 {
-  t_noleak	*i;
-  t_noleak	*prev;
+  void		*prev;
+  void		*next;
 
-  prev = NULL;
-  for (i = noleak_get_first_item(); i; prev = i, i = i->next)
+  prev = *(void **)(data - (sizeof(void *) * 2));
+  if (prev)
     {
-      if (i->data == data)
-	{
-	  free(i->data);
-	  if (prev)
-	    prev->next = i->next;
-	  else
-	    noleak_set_first_item(i->next, 1);
-	  free(i);
-	  break;
-	}
+      next = prev + sizeof(void *);
+      *(int **)next = *(void **)(data - sizeof(void *));
     }
+  else
+    {
+      next = *(void **)(data - sizeof(void *));
+      noleak_set_last_item(next, 1);
+      if (next)
+	*(int **)next = NULL;
+    }
+  free(data - sizeof(void *) * 2);
 }
 
 void		*xmalloc(int size)
 {
   void		*r;
-  t_noleak	*new;
 
-  r = malloc(size);
+  r = malloc(size + sizeof(void *) * 2);
   if (!r)
     exit(-1);
-  new = malloc(sizeof(t_noleak));
-  if (!new)
-    exit(-1);
-  new->data = r;
-  new->next = noleak_get_first_item();
-  noleak_set_first_item(new, 1);
-  return (r);
+  *(void **)(r) = noleak_get_last_item();
+  *(void **)(r + sizeof(void *)) = NULL;
+
+  if (noleak_get_last_item())
+    *(void **)(noleak_get_last_item() + sizeof(void *)) = r;
+  noleak_set_last_item(r, 1);
+  return (r + sizeof(void *) * 2);
 }
 
 void		__attribute__((destructor))noleak_dtor(void)
 {
-  t_noleak	*i;
-  t_noleak	*next;
+  void		*last;
+  void		*cpy;
 
-  for (i = noleak_get_first_item(); i; i = next)
+  for (last = noleak_get_last_item(); last; last = cpy)
     {
-      free(i->data);
-      next = i->next;
-      free(i);
+      cpy = *(void **)last;
+      free(last);
     }
 }
