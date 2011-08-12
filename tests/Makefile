@@ -6,10 +6,10 @@ OBJ=		$(SRC:.c=.o)
 
 CC=		gcc
 
-CFLAGS+=	-W -Wall -I ./../lib/
+CFLAGS+=	-W -Wall -I ./../lib -g -pg
 
 $(NAME):	$(OBJ)
-		$(CC) $(OBJ) -o $(NAME) -L ../lib/ -lnoleak
+		$(CC) -o $(NAME) $(OBJ) -pg -L ../lib/ -lnoleak
 
 clean:
 		rm -f $(OBJ)
