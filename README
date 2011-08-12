@@ -1,0 +1,8 @@
+Comment l'utiliser?
+	cd lib;
+	make;
+	cd ../example;
+	make;
+	
+Il suffit de linker avec libnoleak et dutiliser xmalloc et xfree a la place
+de free et malloc.
