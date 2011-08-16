@@ -17,8 +17,8 @@ void	*noleak_get_last_item(void)
 
 void		xfree(void *data)
 {
-  void		*prev;
-  void		*next;
+  static void	*prev;
+  static void	*next;
 
   prev = *(void **)(data - (sizeof(void *) * 2));
   if (prev)
