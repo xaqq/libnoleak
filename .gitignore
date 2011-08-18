@@ -1,0 +1,5 @@
+tests/*.o
+tests/gmon.out
+tests/test
+lib/*.o
+lib/*.a
