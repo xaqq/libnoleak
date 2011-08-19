@@ -1,6 +1,7 @@
 NAME=		libnoleak.a
 
-SRC=		noleak.c
+SRC=		noleak.c \
+		init.c
 
 OBJ=		$(SRC:.c=.o)
 

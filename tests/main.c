@@ -1,5 +1,7 @@
 #include	<stdlib.h>
 #include	<stdio.h>
+#include	<string.h>
+#include	<malloc.h>
 #include	"noleak.h"
 #define		ITERATIONS	20000
 
@@ -12,9 +14,9 @@ int		main(int ac, __attribute__((unused))char **av)
     {
       printf("Testing with LibNoLeak\n");
       for (i = 0; i < ITERATIONS; i++) 
-	s[i] = xmalloc(10); 
+	s[i] = xmalloc(10);
       for (i = 0; i < ITERATIONS; i++)
-	xfree(s[i]); 
+	;//free(s[i]); 
     }
   else
     {
@@ -24,5 +26,6 @@ int		main(int ac, __attribute__((unused))char **av)
       for (i = 0; i < ITERATIONS; i++) 
 	free(s[i]); 
     }  
+  __free_hook = NULL;
   return (0);
 }
