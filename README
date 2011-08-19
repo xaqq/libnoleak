@@ -1,1 +1,2 @@
-Devellopment branch, switch to production for stable stuff.
+* Use xmalloc/ xfree if you can. lib will hook to malloc for function who uses malloc internally.
+* It cannot hook to valgrind's malloc. That means that when testing with malloc() and valgrind, it'll say you leak. but you dont.

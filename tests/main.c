@@ -14,7 +14,7 @@ int		main(int ac, __attribute__((unused))char **av)
     {
       printf("Testing with LibNoLeak\n");
       for (i = 0; i < ITERATIONS; i++) 
-	s[i] = xmalloc(10);
+	s[i] = malloc(10);
       for (i = 0; i < ITERATIONS; i++)
 	;//free(s[i]); 
     }
